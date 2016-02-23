@@ -5,4 +5,4 @@ public/*
 *.mustache
 *.mustache
 *.html
-data/*.json
+_data/*.json
