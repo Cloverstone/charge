@@ -1,2 +1,8 @@
 
 node_modules
+public/*
+*.mustache
+*.mustache
+*.mustache
+*.html
+data/*.json
