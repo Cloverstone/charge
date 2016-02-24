@@ -2,13 +2,13 @@
   "name": "charge",
   "version": "1.0.0",
   "description": "Static Site Generator",
-  "main": "staticServer.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Adam Smallcomb",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
+    "marked": "^0.3.5",
     "mustache": "^2.2.1",
     "node-static": "^0.7.7"
   }

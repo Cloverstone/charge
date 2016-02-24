@@ -1,27 +1,35 @@
-fs = require('fs');
+var fs = require('fs');
+var marked = require('marked');
 
-var template_dir = './_templates';
+var config = {target_dir: "./public"//JSON.parse(fs.readFileSync('config.json', 'utf8')); 
+
 var data_dir = './_data';
-var target_dir = './public';
+var target_dir = config.target_dir;
+var template_dir = './_templates';
+var layouts_dir = template_dir + '/layouts/';
+var partials_dir = template_dir + '/partials/';
+var ext = '.mustache';
 
 Mustache = require('Mustache');
 var filecontent = fs.readFileSync(data_dir + '/global.json', 'utf8');
 globalData = JSON.parse(filecontent);
 partialViews = {};
-
+layoutViews = {};
 var files = fs.readdirSync(data_dir);
 for(var i in files) {
 	var filecontent = fs.readFileSync(data_dir + '/'+files[i], 'utf8');
 	globalData[files[i].split('.json')[0]] = JSON.parse(filecontent);
 }
 
-var partials = fs.readdirSync(template_dir + '/partials');
+var partials = fs.readdirSync(partials_dir);
 for(var i in partials) {
-	var filecontent = fs.readFileSync(template_dir + '/partials/'+partials[i], 'utf8');
-	partialViews[partials[i].split('.mustache')[0]] = filecontent;
+	partialViews[partials[i].split(ext)[0]] = fs.readFileSync(partials_dir+partials[i], 'utf8');
 }
 
-var layout = fs.readFileSync(template_dir + '/layouts/default.mustache', 'utf8'); 
+var layouts = fs.readdirSync(layouts_dir);
+for(var i in layouts) {
+	layoutViews[layouts[i].split(ext)[0]] = fs.readFileSync(layouts_dir+layouts[i], 'utf8');
+}
 
 fs.readdir(template_dir, function(err, files){
 	files.forEach(function(file) {
@@ -33,10 +41,12 @@ fs.readdir(template_dir, function(err, files){
 		  		return;
 		  	}
 		  }
-		  partialViews.content = view;
-		  fs.writeFile(target_dir + '/' + file.split('.mustache')[0] + '.html', Mustache.render(layout, globalData, partialViews), function (err) {
-		  	if (err) return console.log(err);
-			});
+		  globalData.page = globalData[file.split(ext)[0]];
+			partialViews.content = marked(view.split('{{>').join('{{\\>'));
+
+		  fs.writeFileSync(target_dir + '/' + file.split(ext)[0] + '.html', Mustache.render(layoutViews[ globalData.page.layout || 'default'], globalData, partialViews));
+		  delete partialViews.content;
 		});
 	})
+	console.log('Completed! - your site is located at ' + target_dir);
 })

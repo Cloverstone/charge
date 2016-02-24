@@ -2,7 +2,5 @@
 node_modules
 public/*
 *.mustache
-*.mustache
-*.mustache
 *.html
 _data/*.json
