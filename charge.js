@@ -42,6 +42,13 @@ fs.readdir(template_dir, function(err, files){
 		  	}
 		  }
 		  globalData.page = globalData[file.split(ext)[0]];
+
+		  if(globalData.page.widgets){
+		  	// globalData.page.sections = [];
+		  	// globalData.page.widgets.each(function(section){
+					// globalData.page.sections.push(section[0].content)
+		  	// })
+		  }
 			partialViews.content = marked(view.split('{{>').join('{{\\>'));
 
 		  fs.writeFileSync(target_dir + '/' + file.split(ext)[0] + '.html', Mustache.render(layoutViews[ globalData.page.layout || 'default'], globalData, partialViews));
