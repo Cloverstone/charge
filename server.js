@@ -1,3 +1,7 @@
+var fs = require('fs');
+
+var config = JSON.parse(fs.readFileSync('config.json', 'utf8')); 
+var target_dir = config.target_dir || './public';
 /**
  * Static HTTP Server
  *
@@ -11,7 +15,7 @@ var static = require( 'node-static' ),
     http = require( 'http' );
 
 // config
-var file = new static.Server( './public', {
+var file = new static.Server( target_dir, {
     cache: 3600,
     gzip: true
 } );
@@ -19,6 +23,6 @@ var file = new static.Server( './public', {
 // serve
 http.createServer( function ( request, response ) {
     request.addListener( 'end', function () {
-        file.serve( request, response );
+      file.serve( request, response );
     } ).resume();
 } ).listen( port );

@@ -1,13 +1,13 @@
 var fs = require('fs');
 var marked = require('marked');
 
-var config = {target_dir: "./public"//JSON.parse(fs.readFileSync('config.json', 'utf8')); 
+var config = JSON.parse(fs.readFileSync('config.json', 'utf8')); 
 
-var data_dir = './_data';
-var target_dir = config.target_dir;
-var template_dir = './_templates';
-var layouts_dir = template_dir + '/layouts/';
-var partials_dir = template_dir + '/partials/';
+var data_dir = config.data_dir || './_site/data';
+var target_dir = config.target_dir || './public';
+var template_dir = config.template_dir || './_site/templates';
+var layouts_dir = config.layouts_dir || template_dir + '/layouts/';
+var partials_dir = config.partials_dir || template_dir + '/partials/';
 var ext = '.mustache';
 
 Mustache = require('Mustache');
