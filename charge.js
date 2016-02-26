@@ -1,5 +1,8 @@
 var fs = require('fs');
 var marked = require('marked');
+var http = require('http');
+var Promise = require('bluebird');
+
 
 var config = JSON.parse(fs.readFileSync('config.json', 'utf8')); 
 
@@ -20,6 +23,32 @@ for(var i in files) {
 	var filecontent = fs.readFileSync(data_dir + '/'+files[i], 'utf8');
 	globalData[files[i].split('.json')[0]] = JSON.parse(filecontent);
 }
+
+// var options = {
+//   host: 'cberry.io',
+//   port: 80,
+//   path: '/d/563175329c58748ec57f5730',
+//   method: 'GET'
+// };
+// // globalData
+// http.request(options, function(res) {
+
+// 	var data = '';
+
+//   // console.log('STATUS: ' + res.statusCode);
+//   // console.log('HEADERS: ' + JSON.stringify(res.headers));
+//   res.setEncoding('utf8');
+//   res.on('data', function (chunk) {
+//     data += chunk;
+//   });  
+//   res.on('end', function () {
+//     globalData.projects = {"projects": data};
+//     console.log(globalData);
+
+//   });
+// }).end();
+
+
 
 var partials = fs.readdirSync(partials_dir);
 for(var i in partials) {
@@ -57,3 +86,54 @@ fs.readdir(template_dir, function(err, files){
 	})
 	console.log('Completed! - your site is located at ' + target_dir);
 })
+
+
+
+
+
+
+
+
+
+var PromiseRequest = Promise.method(function(options) {
+    return new Promise(function(resolve, reject) { 
+        var request = http.request(options, function(response) {
+            // Bundle the result
+            var result = {
+                'httpVersion': response.httpVersion,
+                'httpStatusCode': response.statusCode,
+                'headers': response.headers,
+                'body': '',
+                'trailers': response.trailers,
+            };
+
+            // Build the body
+            response.on('data', function(chunk) {
+                result.body += chunk;
+            });
+
+						// Resolve the promise when the response ends
+						response.on('end', function() {
+						    resolve(result);
+						});
+        });
+
+        // Handle errors
+        request.on('error', function(error) {
+            console.log('Problem with request:', error.message);
+            reject(error);
+        });
+
+        // Must always call .end() even if there is no data being written to the request body
+        request.end();
+    });
+});
+
+var myRequest = PromiseRequest({
+    method: 'GET',
+    host: 'cberry.io',
+    port: 80,
+    path: '/d/563175329c58748ec57f5730',
+}).then(function(value) {
+    console.log('value:', value);
+});

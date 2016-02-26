@@ -2,6 +2,7 @@ var fs = require('fs');
 
 var config = JSON.parse(fs.readFileSync('config.json', 'utf8')); 
 var target_dir = config.target_dir || './public';
+
 /**
  * Static HTTP Server
  *
