@@ -87,7 +87,8 @@ fs.readdirAsync(template_dir).map(function (file) {
 				    port: 80,
 				    path: '/d/563175329c58748ec57f5730',
 				},globalData[ref].fetch)).then(function(value) {
-				    console.log('data'+ref);
+					globalData[ref].fetch = JSON.parse(value.body);
+				    // console.log(globalData[ref].fetch);
 				});
     	}
 
