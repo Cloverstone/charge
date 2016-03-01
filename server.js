@@ -1,7 +1,12 @@
 var fs = require('fs');
+// var config = {};
+// if(typeof process.argv[2] !== 'undefined') {
+// 	config = JSON.parse(fs.readFileSync(process.argv[2] + 'config.json', 'utf8')); 
+// }
 
-var config = JSON.parse(fs.readFileSync('config.json', 'utf8')); 
-var target_dir = config.target_dir || './public';
+
+// var config = JSON.parse(fs.readFileSync('config.json', 'utf8')); 
+var target_dir = process.argv[2] || './public';
 
 /**
  * Static HTTP Server
@@ -23,7 +28,7 @@ var file = new static.Server( target_dir, {
 
 // serve
 http.createServer( function ( request, response ) {
-    request.addListener( 'end', function () {
-      file.serve( request, response );
-    } ).resume();
+  request.addListener( 'end', function () {
+    file.serve( request, response );
+  } ).resume();
 } ).listen( port );

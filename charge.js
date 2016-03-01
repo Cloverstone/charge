@@ -38,8 +38,10 @@ var PromiseRequest = Promise.method(function(options) {
 		request.end();
 	});
 });
-
-var config = JSON.parse(fs.readFileSync('config.json', 'utf8')); 
+var config = {};
+if(typeof process.argv[2] !== 'undefined') {
+	config = JSON.parse(fs.readFileSync(process.argv[2] + 'config.json', 'utf8')); 
+}
 
 var data_dir = config.data_dir || './_site/data';
 var target_dir = config.target_dir || './public';
