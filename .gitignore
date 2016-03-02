@@ -1,7 +1,2 @@
 
 node_modules
-public/*
-*.mustache
-*.html
-_data/*.json
-./config.json
