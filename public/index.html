@@ -47,8 +47,8 @@ var data = {};
 		$('#container').html(render(page, {data: $.extend(true,{}, data, session), hash: hashParams, session: session}));
 		if(typeof hashParams['form'] !== 'undefined'){
 			$.get('/data/' + hashParams['form'], function(response){
-				console.log(response);
-				$('#form').berry({flatten: false, actions: ['save'], attributes: response, fields: getItems(response)}).on('save', function(){
+				// console.log(response);
+				$('#form').berry({default: {falsestate: ''}, flatten: true, actions: ['save'], attributes: response.data, fields: response.schema.fields || getItems(response.data)}).on('save', function(){
 					$.post('/data/' + hashParams['form'], this.toJSON(), function(){
 						console.log(response);
 					});

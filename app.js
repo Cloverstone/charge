@@ -70,7 +70,7 @@ function *show(id) {
   // this.body = yield render('show', { post: post });
 
   this.body = yield function *() {
-    return JSON.parse(fs.readFileSync(config.data_dir + '/' + id + '.json', 'utf8'));
+    return {data: JSON.parse(fs.readFileSync(config.data_dir + '/' + id + '.json', 'utf8')), schema: JSON.parse(fs.readFileSync(config.data_dir + '/schema/' + id + '.json', 'utf8'))};
   };
 }
 

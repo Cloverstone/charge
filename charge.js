@@ -58,9 +58,11 @@ layoutViews = {};
 
 
 fs.readdirAsync(data_dir).map(function (file){
-	fs.readFileAsync(data_dir + '/'+file, 'utf8').then(function(content){
-		globalData[file.split('.json')[0]] = JSON.parse(content);
-	});
+	if(file.indexOf('.json') >=0){
+		fs.readFileAsync(data_dir + '/'+file, 'utf8').then(function(content){
+			globalData[file.split('.json')[0]] = JSON.parse(content);
+		});
+	}
 });
 
 fs.readdirAsync(partials_dir).map(function (partial){
@@ -70,6 +72,7 @@ fs.readdirAsync(partials_dir).map(function (partial){
 fs.readdirAsync(layouts_dir).map(function (layout){
  layoutViews[layout.split(ext)[0]] = fs.readFileSync(layouts_dir + layout, 'utf8');
 });
+
 
 fs.readdirAsync(template_dir).map(function (file) {
 
