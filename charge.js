@@ -48,10 +48,11 @@ var target_dir = config.target_dir || './public';
 var template_dir = config.template_dir || './_site/templates';
 var layouts_dir = config.layouts_dir || template_dir + '/layouts/';
 var partials_dir = config.partials_dir || template_dir + '/partials/';
+var global_dataFIle = config.global || data_dir + '/global.json';
 var ext = '.mustache';
 
 
-var filecontent = fs.readFileSync(data_dir + '/global.json', 'utf8');
+var filecontent = fs.readFileSync(global_dataFIle, 'utf8');
 globalData = JSON.parse(filecontent);
 partialViews = {};
 layoutViews = {};
